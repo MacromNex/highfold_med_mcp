@@ -21,9 +21,13 @@ RUN pip install --no-cache-dir \
 RUN git clone https://github.com/hongliangduan/HighFold-MeD.git /app/repo/HighFold-MeD || true
 
 # Copy MCP server source
-COPY src/ src/
+COPY --chmod=755 src/ src/
+
+# Create writable directories for jobs/results
+RUN mkdir -p /app/jobs /app/results && chmod 777 /app /app/jobs /app/results
 
 # Override NVIDIA entrypoint which prints a banner to stdout,
 # corrupting the JSON-RPC stdio stream used by MCP
+ENV NVIDIA_CUDA_END_OF_LIFE=0
 ENTRYPOINT []
 CMD ["python", "src/server.py"]
