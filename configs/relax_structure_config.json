@@ -1,0 +1,43 @@
+{
+  "_description": "Configuration for cyclic peptide structure relaxation",
+  "_source": "Extracted from examples/use_case_3_structure_relaxation.py",
+
+  "openmm": {
+    "demo_mode": true,
+    "force_field": "amber14sb",
+    "water_model": "tip3p"
+  },
+
+  "minimization": {
+    "enable_minimization": true,
+    "tolerance": 2.39,
+    "tolerance_units": "kcal/mol",
+    "max_iterations": 1000
+  },
+
+  "restraints": {
+    "backbone_restraints": true,
+    "restraint_force": 20000.0,
+    "restraint_force_units": "kJ/mol/nm²",
+    "restrained_atoms": ["CA", "C", "N", "O"]
+  },
+
+  "simulation": {
+    "temperature": 0,
+    "temperature_units": "kelvin",
+    "timestep": 0.01,
+    "timestep_units": "picosecond"
+  },
+
+  "output": {
+    "format": "pdb",
+    "save_energy_info": true,
+    "cleanup_temp_files": true
+  },
+
+  "amber": {
+    "use_tleap": true,
+    "leap_script_template": "protein.ff14SB",
+    "force_field_files": ["leaprc.protein.ff14SB", "leaprc.gaff", "leaprc.water.tip3p"]
+  }
+}

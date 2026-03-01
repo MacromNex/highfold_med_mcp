@@ -1,0 +1,56 @@
+{
+  "test_date": "2025-12-31T02:16:16.939933",
+  "summary": {
+    "total": 9,
+    "passed": 0,
+    "failed": 0,
+    "errors": 9
+  },
+  "results": [
+    {
+      "test": "check_dependencies",
+      "status": "error",
+      "error": "'FunctionTool' object is not callable"
+    },
+    {
+      "test": "list_example_data",
+      "status": "error",
+      "error": "'FunctionTool' object is not callable"
+    },
+    {
+      "test": "validate_targets_file_valid",
+      "status": "error",
+      "error": "'FunctionTool' object is not callable"
+    },
+    {
+      "test": "validate_targets_file_invalid",
+      "status": "error",
+      "error": "'FunctionTool' object is not callable"
+    },
+    {
+      "test": "get_peptide_info",
+      "status": "error",
+      "error": "'FunctionTool' object is not callable"
+    },
+    {
+      "test": "create_demo_targets_file",
+      "status": "error",
+      "error": "'FunctionTool' object is not callable"
+    },
+    {
+      "test": "list_jobs",
+      "status": "error",
+      "error": "'FunctionTool' object is not callable"
+    },
+    {
+      "test": "submit_structure_prediction",
+      "status": "error",
+      "error": "'FunctionTool' object is not callable"
+    },
+    {
+      "test": "get_job_status_invalid",
+      "status": "error",
+      "error": "'FunctionTool' object is not callable"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "_description": "Configuration for cyclic peptide structure prediction",
+  "_source": "Extracted from examples/use_case_1_single_prediction.py",
+
+  "model": {
+    "name": "model_2_ptm",
+    "type": "alphafold",
+    "demo_mode": true
+  },
+
+  "processing": {
+    "alignment_dir": "examples/data/alignments",
+    "max_templates": 10,
+    "include_template_info": true,
+    "validate_sequences": true
+  },
+
+  "output": {
+    "format": "txt",
+    "include_metadata": true,
+    "save_template_details": true,
+    "auto_generate_filename": true
+  },
+
+  "cyclic_peptide": {
+    "notation": "highfold",
+    "d_amino_acids": true,
+    "n_methylation": true,
+    "terminal_modifications": true,
+    "max_sequence_length": 50
+  }
+}

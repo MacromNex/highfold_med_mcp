@@ -1,0 +1,30 @@
+{
+  "_description": "Configuration for batch cyclic peptide structure prediction",
+  "_source": "Extracted from examples/use_case_2_batch_prediction.py",
+
+  "processing": {
+    "max_peptides": null,
+    "continue_on_error": true,
+    "parallel": false,
+    "timeout_seconds": 300
+  },
+
+  "output": {
+    "format": "txt",
+    "save_individual": true,
+    "save_summary": true,
+    "create_subdirectories": true
+  },
+
+  "model": {
+    "name": "model_2_ptm",
+    "demo_mode": true,
+    "alignment_dir": "examples/data/alignments"
+  },
+
+  "error_handling": {
+    "continue_on_error": true,
+    "max_consecutive_failures": 5,
+    "retry_failed": false
+  }
+}

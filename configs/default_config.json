@@ -1,0 +1,70 @@
+{
+  "_description": "Default configuration for all HighFold-MeD MCP tools",
+  "_version": "1.0.0",
+
+  "global": {
+    "demo_mode": true,
+    "working_directory": "./results",
+    "temp_directory": "/tmp/highfold_mcp",
+    "cleanup_temp_files": true
+  },
+
+  "data_paths": {
+    "examples_dir": "examples",
+    "alignments_dir": "examples/data/alignments",
+    "sequences_dir": "examples/data/sequences",
+    "structures_dir": "examples/data/structures",
+    "results_dir": "results"
+  },
+
+  "cyclic_peptides": {
+    "notation_system": "highfold",
+    "supported_modifications": {
+      "d_amino_acids": true,
+      "n_methylation": true,
+      "terminal_modifications": true,
+      "custom_residues": true
+    },
+    "sequence_validation": {
+      "min_length": 3,
+      "max_length": 50,
+      "allowed_characters": "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789._/"
+    }
+  },
+
+  "models": {
+    "default_model": "model_2_ptm",
+    "available_models": ["model_1", "model_2", "model_2_ptm", "model_3", "model_4", "model_5"],
+    "alphafold_parameters_dir": null,
+    "custom_model_dir": null
+  },
+
+  "output": {
+    "default_format": "txt",
+    "supported_formats": ["txt", "json", "csv", "pdb"],
+    "timestamp_format": "%Y%m%d_%H%M%S",
+    "include_metadata": true,
+    "auto_create_directories": true
+  },
+
+  "logging": {
+    "level": "INFO",
+    "format": "%(asctime)s - %(levelname)s - %(message)s",
+    "save_logs": false,
+    "log_file": "highfold_mcp.log"
+  },
+
+  "performance": {
+    "parallel_processing": false,
+    "max_workers": 4,
+    "timeout_seconds": 300,
+    "memory_limit_gb": null
+  },
+
+  "error_handling": {
+    "continue_on_error": true,
+    "max_retries": 3,
+    "retry_delay_seconds": 1,
+    "raise_on_validation_error": false
+  }
+}

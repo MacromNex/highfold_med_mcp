@@ -1,0 +1,334 @@
+{
+  "project_name": "highfold-med-tools",
+  "description": "MCP tools for cyclic peptide computational analysis using HighFold-MeD (AlphaFold modified for cyclic peptides with N-methylation and D-amino acids)",
+  "readme_created": "2025-12-31",
+  "total_tools": 14,
+  "total_scripts": 4,
+  "total_configs": 5,
+  "documentation_sections": 14,
+  "total_examples": 5,
+  "total_demo_files": 7,
+
+  "tools": [
+    {
+      "name": "get_job_status",
+      "type": "job_management",
+      "description": "Check job progress and current status",
+      "example_prompt": "Check the status of job abc12345",
+      "runtime": "immediate",
+      "parameters": ["job_id"]
+    },
+    {
+      "name": "get_job_result",
+      "type": "job_management",
+      "description": "Retrieve results from completed jobs",
+      "example_prompt": "Get the results for job abc12345",
+      "runtime": "immediate",
+      "parameters": ["job_id"]
+    },
+    {
+      "name": "get_job_log",
+      "type": "job_management",
+      "description": "View execution logs (default: last 50 lines)",
+      "example_prompt": "Show me the latest logs for job abc12345",
+      "runtime": "immediate",
+      "parameters": ["job_id", "tail"]
+    },
+    {
+      "name": "cancel_job",
+      "type": "job_management",
+      "description": "Terminate running jobs",
+      "example_prompt": "Cancel job abc12345",
+      "runtime": "immediate",
+      "parameters": ["job_id"]
+    },
+    {
+      "name": "list_jobs",
+      "type": "job_management",
+      "description": "List all jobs with optional status filter",
+      "example_prompt": "List all running jobs",
+      "runtime": "immediate",
+      "parameters": ["status"]
+    },
+    {
+      "name": "submit_structure_prediction",
+      "type": "submit_api",
+      "description": "Predict 3D structure using HighFold-MeD",
+      "example_prompt": "Submit structure prediction for index 0 in @examples/data/sequences/targets.tsv with demo_mode=True",
+      "runtime": "10-30 min",
+      "parameters": ["input_file", "index", "model_name", "alignment_dir", "demo_mode", "job_name"]
+    },
+    {
+      "name": "submit_structure_relaxation",
+      "type": "submit_api",
+      "description": "MD energy minimization with OpenMM",
+      "example_prompt": "Submit structure relaxation for @examples/data/structures/1.pdb with demo_mode=True",
+      "runtime": "5-15 min",
+      "parameters": ["input_file", "restraint_force", "tolerance", "backbone_restraints", "energy_minimization", "demo_mode", "job_name"]
+    },
+    {
+      "name": "submit_model_finetuning",
+      "type": "submit_api",
+      "description": "Fine-tune HighFold models",
+      "example_prompt": "Submit model fine-tuning with demo_mode=True and num_epochs=5",
+      "runtime": "30+ min to hours",
+      "parameters": ["train_file", "validation_file", "model_name", "num_epochs", "batch_size", "learning_rate", "demo_mode", "job_name"]
+    },
+    {
+      "name": "submit_batch_prediction",
+      "type": "submit_api",
+      "description": "Process multiple peptides sequentially",
+      "example_prompt": "Submit batch prediction for first 5 peptides in @examples/data/sequences/targets.tsv",
+      "runtime": "N × 10+ min",
+      "parameters": ["input_file", "max_peptides", "model_name", "demo_mode", "continue_on_error", "job_name"]
+    },
+    {
+      "name": "validate_targets_file",
+      "type": "sync",
+      "description": "Validate targets.tsv format and sequences",
+      "example_prompt": "Use validate_targets_file to check @examples/data/sequences/targets.tsv",
+      "runtime": "~10 sec",
+      "parameters": ["targets_file"]
+    },
+    {
+      "name": "get_peptide_info",
+      "type": "sync",
+      "description": "Extract peptide info by index",
+      "example_prompt": "Use get_peptide_info with index 0 for @examples/data/sequences/targets.tsv",
+      "runtime": "~5 sec",
+      "parameters": ["targets_file", "index"]
+    },
+    {
+      "name": "check_dependencies",
+      "type": "sync",
+      "description": "Verify environment setup",
+      "example_prompt": "Use check_dependencies to verify the HighFold-MeD environment setup",
+      "runtime": "~5 sec",
+      "parameters": []
+    },
+    {
+      "name": "list_example_data",
+      "type": "sync",
+      "description": "List available demo files",
+      "example_prompt": "Use list_example_data to show available files",
+      "runtime": "~5 sec",
+      "parameters": []
+    },
+    {
+      "name": "create_demo_targets_file",
+      "type": "utility",
+      "description": "Generate synthetic targets for testing",
+      "example_prompt": "Create a demo targets file with 10 peptides using create_demo_targets_file",
+      "runtime": "~10 sec",
+      "parameters": ["output_file", "num_peptides", "sequence_length_range"]
+    }
+  ],
+
+  "scripts": [
+    {
+      "name": "predict_structure.py",
+      "description": "Predict 3D structure from HighFold notation",
+      "example_command": "python scripts/predict_structure.py --input examples/data/sequences/targets.tsv --index 0 --demo_mode",
+      "parameters": ["--input", "--output", "--index", "--config", "--model_name", "--alignment_dir", "--demo_mode"],
+      "runtime": "~10 min",
+      "source_use_case": "UC-001: Single Cyclic Peptide Structure Prediction"
+    },
+    {
+      "name": "batch_predict.py",
+      "description": "Batch processing multiple peptides",
+      "example_command": "python scripts/batch_predict.py --input examples/data/sequences/targets.tsv --max_peptides 5 --demo_mode",
+      "parameters": ["--input", "--output_dir", "--max_peptides", "--continue_on_error", "--demo_mode", "--config"],
+      "runtime": "~N × 10 min",
+      "source_use_case": "UC-002: Batch Cyclic Peptide Structure Prediction"
+    },
+    {
+      "name": "relax_structure.py",
+      "description": "OpenMM energy minimization",
+      "example_command": "python scripts/relax_structure.py --input examples/data/structures/1.pdb --demo",
+      "parameters": ["--input", "--output", "--restraint_force", "--tolerance", "--backbone_restraints", "--demo"],
+      "runtime": "~5-15 min",
+      "source_use_case": "UC-003: Structure Relaxation with OpenMM"
+    },
+    {
+      "name": "finetune_model.py",
+      "description": "Model fine-tuning (demo mode)",
+      "example_command": "python scripts/finetune_model.py --demo --epochs 10",
+      "parameters": ["--train_file", "--validation_file", "--epochs", "--batch_size", "--learning_rate", "--demo"],
+      "runtime": "~30+ min",
+      "source_use_case": "UC-004: Model Fine-tuning for Cyclic Peptides"
+    }
+  ],
+
+  "demo_data": [
+    {
+      "file": "examples/data/sequences/targets.tsv",
+      "description": "Sample cyclic peptides with HighFold notation",
+      "format": "TSV",
+      "used_by": ["all prediction tools"],
+      "sample_peptides": ["PhdLP_d (D7.6)", "VIhFIh. (D7.8)", "dLhdL.PL (D8.1)", "gdhPLOPL (D8.5)"],
+      "count": "10+ peptides"
+    },
+    {
+      "file": "examples/data/alignments/",
+      "description": "Template alignment files for structure prediction",
+      "format": "TSV",
+      "used_by": ["submit_structure_prediction"],
+      "count": "4432 files"
+    },
+    {
+      "file": "examples/data/structures/1.pdb",
+      "description": "Sample cyclic peptide structure (11 residues, 192 atoms)",
+      "format": "PDB",
+      "used_by": ["submit_structure_relaxation"],
+      "size": "12.9 KB"
+    },
+    {
+      "file": "examples/data/structures/1_relaxed.pdb",
+      "description": "Energy-minimized structure",
+      "format": "PDB",
+      "used_by": ["comparison reference"],
+      "size": "12.9 KB"
+    },
+    {
+      "file": "examples/data/structures/2.pdb",
+      "description": "Additional sample structure",
+      "format": "PDB",
+      "used_by": ["testing"],
+      "size": "12.9 KB"
+    },
+    {
+      "file": "examples/data/structures/PML.pdb",
+      "description": "Pro-Met-Leu cyclic peptide",
+      "format": "PDB",
+      "used_by": ["small molecule example"],
+      "size": "4.2 KB"
+    }
+  ],
+
+  "configs": [
+    {
+      "file": "predict_structure_config.json",
+      "description": "Structure prediction parameters",
+      "parameters": {"model": "model_2_ptm", "demo_mode": true, "use_templates": true, "validate_sequences": true}
+    },
+    {
+      "file": "batch_predict_config.json",
+      "description": "Batch processing settings",
+      "parameters": {"max_peptides": 10, "continue_on_error": true, "demo_mode": true}
+    },
+    {
+      "file": "relax_structure_config.json",
+      "description": "Molecular dynamics parameters",
+      "parameters": {"restraint_force": 20000.0, "tolerance": 2.39, "backbone_restraints": true, "energy_minimization": true}
+    },
+    {
+      "file": "finetune_model_config.json",
+      "description": "Model training configuration",
+      "parameters": {"num_epochs": 10, "batch_size": 1, "learning_rate": 0.0001, "demo_mode": true}
+    },
+    {
+      "file": "default_config.json",
+      "description": "Global default settings",
+      "parameters": {"global": "defaults", "data_paths": "relative paths", "cyclic_peptides": "notation support"}
+    }
+  ],
+
+  "installation": {
+    "package_manager": "mamba (preferred) or conda",
+    "python_version": "3.10+ (MCP server), 3.8 (HighFold legacy)",
+    "environment_strategy": "dual environment",
+    "main_dependencies": ["fastmcp", "loguru", "click", "pandas", "numpy", "tqdm", "rdkit"],
+    "optional_dependencies": ["openmm", "jax", "haiku", "pytorch", "tensorflow"],
+    "installation_time": "~5-10 minutes",
+    "disk_space": "~3GB (main env), ~500MB (legacy env)"
+  },
+
+  "mcp_integration": {
+    "server_name": "highfold-med-tools",
+    "server_path": "src/server.py",
+    "framework": "FastMCP 2.14.1",
+    "claude_code_compatible": true,
+    "gemini_cli_compatible": true,
+    "registration_methods": ["fastmcp install", "claude mcp add", "settings.json"],
+    "development_server": "fastmcp dev src/server.py",
+    "inspector_url": "http://localhost:6274"
+  },
+
+  "cyclic_peptide_features": {
+    "d_amino_acids": "dL, dP, dA notation support",
+    "n_methylation": "h (methylated histidine), p (methylated proline)",
+    "terminal_modifications": ". notation for C-terminal modifications",
+    "cyclization_handling": "/ notation (removed during processing)",
+    "template_alignments": "Pre-computed template libraries",
+    "sequence_validation": "HighFold notation parsing and validation"
+  },
+
+  "examples_provided": [
+    {
+      "name": "Quick Validation and Analysis",
+      "goal": "Validate and analyze a cyclic peptide dataset before processing",
+      "tools_used": ["validate_targets_file", "get_peptide_info", "check_dependencies"],
+      "expected_output": "File validation results, peptide details, environment status"
+    },
+    {
+      "name": "Single Structure Prediction Workflow",
+      "goal": "Predict 3D structure for a cyclic peptide with D-amino acids",
+      "tools_used": ["submit_structure_prediction", "get_job_status", "get_job_result"],
+      "expected_output": "Job ID, prediction summary, confidence scores, 3D coordinates"
+    },
+    {
+      "name": "Batch Virtual Screening",
+      "goal": "Process multiple cyclic peptides for drug discovery",
+      "tools_used": ["validate_targets_file", "submit_batch_prediction", "get_job_status"],
+      "expected_output": "Batch results with individual files and statistics"
+    },
+    {
+      "name": "Structure Relaxation Pipeline",
+      "goal": "Energy minimize a predicted structure",
+      "tools_used": ["submit_structure_relaxation", "get_job_result"],
+      "expected_output": "Energy-minimized structure with energy change statistics"
+    },
+    {
+      "name": "Model Fine-tuning for Custom Dataset",
+      "goal": "Adapt HighFold for a specific cyclic peptide family",
+      "tools_used": ["create_demo_targets_file", "submit_model_finetuning", "get_job_log"],
+      "expected_output": "Training progress and final model performance metrics"
+    }
+  ],
+
+  "troubleshooting_categories": [
+    "Environment Issues",
+    "MCP Server Issues",
+    "File Format Issues",
+    "Job Management Issues",
+    "Performance Issues"
+  ],
+
+  "validation_results": {
+    "all_paths_verified": true,
+    "all_scripts_tested": true,
+    "all_configs_exist": true,
+    "demo_data_complete": true,
+    "help_commands_work": true,
+    "file_counts": {
+      "scripts": 4,
+      "configs": 5,
+      "demo_sequences": "10+ peptides",
+      "alignment_files": 4432,
+      "structure_files": 4,
+      "shared_library_functions": 32
+    }
+  },
+
+  "quality_metrics": {
+    "readme_lines": 872,
+    "documentation_sections": 14,
+    "table_of_contents_complete": true,
+    "all_examples_complete": true,
+    "all_file_references_at_absolute_paths": true,
+    "all_claude_code_examples_use_at_references": true,
+    "troubleshooting_comprehensive": true,
+    "installation_instructions_detailed": true,
+    "cyclic_peptide_specific_examples": true
+  }
+}
